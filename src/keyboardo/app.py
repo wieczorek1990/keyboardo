@@ -19,7 +19,7 @@ from keyboardo.widgets import AnimatedButton
 from keyboardo.windowing import center_on_desktop
 from keyboardo.views.header import build_header
 from keyboardo.views.menu import build_menu
-from keyboardo.views.settings import build_settings
+from keyboardo.views.settings import align_settings_controls, build_settings
 from keyboardo.views.insertion import build_insertion
 from keyboardo.views.practice import build_practice
 from keyboardo.views.results import show_results
@@ -46,7 +46,7 @@ class Keyboardo:
         build_settings(self, settings)
         build_insertion(self)
         build_practice(self)
-        root.bind("<Escape>", self.restart_if_in_course)
+        root.bind("<Escape>", self.escape_navigation)
         root.bind("<less>", self.switch_lesson_key)
         root.bind("<greater>", self.switch_lesson_key)
         root.bind("<BackSpace>", lambda event: None if event.widget is self.source_text else self.backspace_navigation(event))
@@ -86,6 +86,7 @@ class Keyboardo:
         family = self.font_choice.get()
         for font in self.fonts.values():
             font.configure(family=family)
+        align_settings_controls(self)
         self.refresh_button_sizes()
         self.fit_menu_window()
         if self.in_course and hasattr(self, "target"):
@@ -117,6 +118,7 @@ class Keyboardo:
         scale = int(self.font_size.get()) / FONT_BODY[1]
         for role, font in self.fonts.items():
             font.configure(size=round(self.base_font_sizes[role] * scale))
+        align_settings_controls(self)
         self.refresh_button_sizes()
         self.fit_menu_window()
         if self.in_course and hasattr(self, "target"):
@@ -171,9 +173,12 @@ class Keyboardo:
         self.in_course = True
         self.start_lesson()
 
-    def restart_if_in_course(self, _event):
-        if self.in_course:
-            self.start_lesson()
+    def escape_navigation(self, _event=None):
+        if self.in_course or self.settings.winfo_ismapped() or self.insertion.winfo_ismapped():
+            self.show_menu()
+        elif self.menu.winfo_ismapped():
+            self.root.destroy()
+        return "break"
 
     def scroll_practice(self, event):
         if not self.in_course or isinstance(event.widget, tk.Text):
@@ -207,30 +212,43 @@ class Keyboardo:
             return "break"
 
     def start_lesson(self):
-        self.finished = False
-        self.message.pack_forget()
-        self.refresh_lessons()
         if self.custom_text is None:
             name, keys, tip = LESSONS[self.lesson]
             self.target = make_exercise(keys) + "\n"
         else:
             name, keys, tip = "Your text", "", "Practise your own text. Press Return at each ↵."
             self.target = self.custom_text + "\n"
-        self.position = self.attempts = self.errors = 0
-        self.input_errors = ""
-        self.started = None
         self.title.configure(text=name)
         self.tip.configure(text=tip)
         if tip:
             self.tip.pack(anchor="w", pady=(0, 18), before=self.text)
         else:
             self.tip.pack_forget()
+        self.reset_practice()
+        if self.custom_text is None:
+            self.save_settings()
+
+    def edit_practice(self):
+        if not self.in_course:
+            return
+        if self.custom_text is None:
+            self.source_text.delete("1.0", "end")
+            self.source_text.insert("1.0", self.target.rstrip("\n"))
+        self.show_text_insertion()
+
+    def reset_practice(self):
+        if not self.in_course:
+            return
+        self.finished = False
+        self.position = self.attempts = self.errors = 0
+        self.input_errors = ""
+        self.started = None
+        self.message.pack_forget()
+        self.refresh_lessons()
         self.render()
         self.practice_canvas.yview_moveto(0)
         self.text.focus_set()
         self.root.after_idle(self.focus_practice_input)
-        if self.custom_text is None:
-            self.save_settings()
 
     def focus_practice_input(self):
         if self.in_course and not self.finished and self.text.winfo_viewable():
@@ -263,6 +281,8 @@ class Keyboardo:
         self.text.configure(state="disabled")
 
     def type_key(self, event):
+        if event.keysym == "Escape":
+            return self.escape_navigation(event)
         if event.char in ("<", ">") and self.custom_text is None:
             return self.switch_lesson_key(event)
         if not self.in_course:

@@ -5,7 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4ebac4df-5220-4a7d-a5e2-3f6402401592" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/bin/build-dmg.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/build-dmg.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/keyboardo/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/keyboardo/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/keyboardo/views/insertion.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/keyboardo/views/insertion.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/keyboardo/views/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/keyboardo/views/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/keyboardo/widgets.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/keyboardo/widgets.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,7 +18,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="17" />
+    <option name="cachedIndexableFilesCount" value="888" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -149,7 +154,8 @@
       <updated>1793166935458</updated>
       <workItem from="1793166936470" duration="1389000" />
       <workItem from="1793168352586" duration="3468000" />
-      <workItem from="1793171868173" duration="3722000" />
+      <workItem from="1793171868173" duration="4031000" />
+      <workItem from="1793185491552" duration="1127000" />
     </task>
     <servers />
   </component>

@@ -26,6 +26,7 @@ def build_practice(app):
     navigation.pack(fill="x", pady=(0, 20))
     AnimatedButton(navigation, text="← Main menu", command=app.show_menu).pack(side="left")
     AnimatedButton(navigation, text="Restart", command=app.start_lesson).pack(side="left", padx=(12, 0))
+    AnimatedButton(navigation, text="Clear", command=app.edit_practice).pack(side="left", padx=(12, 0))
     selector = tk.Frame(navigation, bg=BACKGROUND)
     app.selector = selector
     selector.pack(side="right")

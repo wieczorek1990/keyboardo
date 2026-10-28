@@ -3,8 +3,28 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import font as tkfont
 
-from .theme import BACKGROUND
+from .theme import ACCENT, BACKGROUND, EMPHASIS, SURFACE
 from .typography import centered_padding
+
+
+def draw_checkbox(image, size, selected=False):
+    """Draw a scalable checkbox without relying on the theme's fixed-size mark."""
+    image.configure(width=size, height=size)
+    image.blank()
+    image.put(EMPHASIS, to=(2, 2, size - 2, size - 2))
+    image.put(SURFACE, to=(4, 4, size - 4, size - 4))
+    if not selected:
+        return
+    points = ((0.23, 0.51), (0.43, 0.72), (0.78, 0.28))
+    radius = max(1.5, size * 0.055)
+    for start, end in zip(points, points[1:]):
+        ax, ay = start[0] * size, start[1] * size
+        dx, dy = (end[0] - start[0]) * size, (end[1] - start[1]) * size
+        for y in range(4, size - 4):
+            for x in range(4, size - 4):
+                t = max(0, min(1, ((x - ax) * dx + (y - ay) * dy) / (dx * dx + dy * dy)))
+                if (x - ax - t * dx) ** 2 + (y - ay - t * dy) ** 2 <= radius ** 2:
+                    image.put(ACCENT, to=(x, y, x + 1, y + 1))
 
 
 class AnimatedButton(ttk.Button):
