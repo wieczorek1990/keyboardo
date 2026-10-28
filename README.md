@@ -20,6 +20,10 @@ Use a stable Python release supported by PyInstaller with working Tkinter. Insta
 
 The generated app is unsigned. Signing and notarization with an Apple Developer identity are required for a normal public macOS release.
 
+## Tests
+
+Run `.venv/bin/python -m unittest discover -s tests -v`. No extra test dependencies or GUI session are needed. In PyCharm, right-click `tests/test_core.py` and run its unittest tests. The suite covers lesson parsing and generation, exercise wrapping, settings validation and migration, and progress storage using temporary files.
+
 ## Source layout
 
 `src/keyboardo/app.py` coordinates navigation and typing. Screen construction lives in `views/`, with separate files for the menu, settings, text insertion, practice, header, and results dialog. Other modules handle lesson generation (`lessons.py`), row layout (`exercise.py`), TOML preferences (`config.py`), saved results (`progress.py`), sounds (`sounds.py`), styling (`theme.py`), animated buttons (`widgets.py`), and resource paths (`resources.py`).
