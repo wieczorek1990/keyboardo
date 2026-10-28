@@ -1,0 +1,1 @@
+"""Keyboardo desktop typing tutor."""
